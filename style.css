@@ -26,7 +26,7 @@ img {
 /* ===== БАЗОВЫЕ СТИЛИ (СНАЧАЛА ДЛЯ МОБИЛЬНЫХ) ===== */
 body {
     background-color: #181818 !important;
-    background-image: url('../img/pattern.png');
+    background-image: url('./img/pattern.png');
     background-size: cover;
     background-repeat: no-repeat;
     background-position: center center;
@@ -65,7 +65,7 @@ body {
 }
 
 .logo-txt {
-    max-height: 40px;
+    max-height: 60px;
     width: auto;
     margin: 5px;
 }
@@ -74,8 +74,8 @@ body {
 h1 {
     text-align: center;
     font-size: 24px;
-    margin: 30px 0 20px;
-    padding: 0 15px;
+    margin: 30px 0 30px;
+    padding: 20px;
 }
 
 body h1 {
@@ -234,7 +234,7 @@ body h1 {
     text-decoration: none;
     color: rgb(255, 187, 238);
     font-size: 14px;
-    padding: 8px 12px;
+    padding: 8px 10px;
     white-space: nowrap;
     transition: all 0.3s ease;
     border-radius: 4px;
