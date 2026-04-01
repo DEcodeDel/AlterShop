@@ -9,7 +9,7 @@ function getCart() {
 // Функция для сохранения корзины в localStorage
 function saveCart(cart) {
     localStorage.setItem('cart', JSON.stringify(cart));
-    updateCartCount(); // Обновляем счётчик на всех страницах
+    updateCartCount();
 }
 
 // Функция для добавления товара в корзину
@@ -41,7 +41,6 @@ function addToCart(title, price, img) {
         }, 1500);
     });
     
-    // Показываем уведомление
     showNotification(`✅ ${title} добавлен в корзину`);
 }
 
@@ -51,7 +50,6 @@ function removeFromCart(title) {
     cart = cart.filter(item => item.title !== title);
     saveCart(cart);
     
-    // Обновляем страницу корзины, если мы на ней
     if (window.location.pathname.includes('cart.html')) {
         renderCart();
     }
@@ -71,7 +69,6 @@ function updateQuantity(title, newQuantity) {
         }
     }
     
-    // Обновляем страницу корзины, если мы на ней
     if (window.location.pathname.includes('cart.html')) {
         renderCart();
     }
@@ -93,25 +90,48 @@ function updateCartCount() {
     const cart = getCart();
     const totalItems = cart.reduce((sum, item) => sum + item.quantity, 0);
     
-    // Обновляем все счётчики на странице
     const cartCountElements = document.querySelectorAll('#cartCountFixed, .cart-count-fixed');
     cartCountElements.forEach(element => {
         element.textContent = totalItems;
     });
     
-    // Сохраняем в localStorage для синхронизации между страницами
     localStorage.setItem('cartCount', totalItems);
 }
 
+// Немедленное обновление счётчика при загрузке скрипта
+(function initCartCountOnLoad() {
+    function updateCountFromStorage() {
+        const savedCount = localStorage.getItem('cartCount');
+        if (savedCount !== null) {
+            const cartCountElements = document.querySelectorAll('#cartCountFixed, .cart-count-fixed');
+            cartCountElements.forEach(element => {
+                element.textContent = savedCount;
+            });
+        } else {
+            const cart = getCart();
+            const totalItems = cart.reduce((sum, item) => sum + item.quantity, 0);
+            const cartCountElements = document.querySelectorAll('#cartCountFixed, .cart-count-fixed');
+            cartCountElements.forEach(element => {
+                element.textContent = totalItems;
+            });
+            localStorage.setItem('cartCount', totalItems);
+        }
+    }
+    
+    if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', updateCountFromStorage);
+    } else {
+        updateCountFromStorage();
+    }
+})();
+
 // Функция для отображения уведомления
 function showNotification(message) {
-    // Удаляем существующее уведомление
     const existingNotification = document.querySelector('.cart-notification');
     if (existingNotification) {
         existingNotification.remove();
     }
     
-    // Создаём новое уведомление
     const notification = document.createElement('div');
     notification.className = 'cart-notification';
     notification.innerHTML = message;
@@ -131,14 +151,11 @@ function showNotification(message) {
     
     document.body.appendChild(notification);
     
-    // Удаляем через 2 секунды
     setTimeout(() => {
         notification.style.animation = 'slideOutRight 0.3s ease';
         setTimeout(() => notification.remove(), 300);
     }, 2000);
 }
-
-// Добавьте эту функцию в cart.js (или замените существующую renderCart)
 
 // Функция для отображения корзины на странице cart.html
 function renderCart() {
@@ -197,7 +214,6 @@ function renderCart() {
         cartSummary.textContent = `${totalItems} товар(ов) на сумму ${total} ₽`;
     }
     
-    // Добавляем обработчики событий для кнопок в корзине
     document.querySelectorAll('.cart-item-remove').forEach(btn => {
         btn.addEventListener('click', (e) => {
             const title = btn.dataset.title;
@@ -228,14 +244,12 @@ function renderCart() {
     });
 }
 
-// Функция для экранирования HTML (защита от XSS)
 function escapeHtml(text) {
     const div = document.createElement('div');
     div.textContent = text;
     return div.innerHTML;
 }
 
-// Функция для копирования состава корзины
 function copyCartToClipboard() {
     const cart = getCart();
     if (cart.length === 0) {
@@ -264,10 +278,8 @@ function copyCartToClipboard() {
 
 // Инициализация при загрузке страницы
 document.addEventListener('DOMContentLoaded', function() {
-    // Обновляем счётчик
     updateCartCount();
     
-    // Добавляем обработчики для всех кнопок "В корзину"
     const addToCartButtons = document.querySelectorAll('.add-to-cart-btn');
     addToCartButtons.forEach(button => {
         button.addEventListener('click', function(e) {
@@ -279,17 +291,14 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     });
     
-    // Если мы на странице корзины, рендерим её
     if (window.location.pathname.includes('cart.html')) {
         renderCart();
         
-        // Добавляем обработчик для кнопки очистки
         const clearCartBtn = document.getElementById('clearCartBtn');
         if (clearCartBtn) {
             clearCartBtn.addEventListener('click', clearCart);
         }
         
-        // Добавляем обработчик для кнопки копирования
         const copyCartBtn = document.getElementById('copyCartBtn');
         if (copyCartBtn) {
             copyCartBtn.addEventListener('click', copyCartToClipboard);
@@ -297,7 +306,6 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 });
 
-// Синхронизация счётчика при загрузке страницы (на случай, если localStorage обновился на другой вкладке)
 window.addEventListener('storage', function(e) {
     if (e.key === 'cart' || e.key === 'cartCount') {
         updateCartCount();
@@ -307,29 +315,15 @@ window.addEventListener('storage', function(e) {
     }
 });
 
-// Добавляем анимацию для уведомлений
 const style = document.createElement('style');
 style.textContent = `
     @keyframes slideInRight {
-        from {
-            transform: translateX(100%);
-            opacity: 0;
-        }
-        to {
-            transform: translateX(0);
-            opacity: 1;
-        }
+        from { transform: translateX(100%); opacity: 0; }
+        to { transform: translateX(0); opacity: 1; }
     }
-    
     @keyframes slideOutRight {
-        from {
-            transform: translateX(0);
-            opacity: 1;
-        }
-        to {
-            transform: translateX(100%);
-            opacity: 0;
-        }
+        from { transform: translateX(0); opacity: 1; }
+        to { transform: translateX(100%); opacity: 0; }
     }
 `;
 document.head.appendChild(style);
