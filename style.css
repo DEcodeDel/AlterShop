@@ -83,14 +83,6 @@ body h1 {
     display: block;
 }
 
-/* Контейнер */
-.container {
-    width: 100%;
-    max-width: 1400px;
-    margin: 0 auto;
-    padding: 0 15px;
-}
-
 /* Инфо-блоки */
 .info-1, .info-2, .info-main {
     background-color: white;
@@ -129,7 +121,7 @@ body h1 {
     margin-top: 30px;
 }
 
-/* Фиксированная высота карточки */
+/* ===== СТИЛИ ДЛЯ КАРТОЧЕК (НОВАЯ СТРУКТУРА) ===== */
 .card {
     width: 100%;
     overflow: hidden;
@@ -164,41 +156,20 @@ body h1 {
     transform: scale(1.10);
 }
 
-.img-card:hover {
-    transform: scale(1.2);
-}
-
-.card img{
-    height: 50px;
-}
-
-/* Фиксируем нижнюю часть карточки */
-.card-box {
+/* Основной контент карточки */
+.card-content {
+    flex: 1;
     display: flex;
-    align-items: flex-start;
+    flex-direction: column;
     padding: 10px;
-    gap: 8px;
-    min-height: 60px;
-    height: 180px;
 }
 
-/* Иконка подарка */
-.card-box img {
-    flex-shrink: 0; /* Запрещаем иконке сжиматься */
-    max-height: 60px;
-    width: auto;
-    object-fit: contain;
-}
-
-/* Блок с текстом (привязан к верху) */
 .card-body {
     flex: 1;
     background-color: white;
-    overflow-y: auto; /* Если текста много - скролл */
     padding: 0 0 8px 0;
 }
 
-/* Стили для текста */
 .card-title {
     font-size: 16px !important;
     font-weight: bold;
@@ -215,7 +186,7 @@ body h1 {
     line-height: 1.2;
 }
 
-/* Блок с кнопкой и иконкой (привязан к низу) */
+/* Футер карточки с кнопкой и бонусом */
 .card-footer {
     display: flex;
     align-items: center;
@@ -224,6 +195,36 @@ body h1 {
     margin-top: auto;
     padding-top: 8px;
     border-top: 1px solid #f0f0f0;
+}
+
+/* Иконка подарка */
+.gift-icon {
+    flex-shrink: 0;
+    display: flex;
+    align-items: center;
+}
+
+.gift-icon img {
+    max-height: 45px;
+    width: auto;
+    display: block;
+}
+
+/* Старые стили для обратной совместимости (если остались карточки с card-box) */
+.card-box {
+    display: flex;
+    align-items: flex-start;
+    padding: 10px;
+    gap: 8px;
+    min-height: 60px;
+    height: 180px;
+}
+
+.card-box img {
+    flex-shrink: 0;
+    max-height: 60px;
+    width: auto;
+    object-fit: contain;
 }
 
 /* Фикс для PhotoSwipe */
@@ -244,8 +245,6 @@ body h1 {
 }
 
 /* ===== НАВИГАЦИЯ И ВЫПАДАЮЩЕЕ МЕНЮ ===== */
-
-/* Навигация */
 .navbar {
     width: 100%;
     max-width: 1200px;
@@ -257,7 +256,6 @@ body h1 {
     padding: 5px;
 }
 
-/* Стили для ссылок */
 .text-nav {
     text-decoration: none;
     color: rgb(255, 187, 238);
@@ -268,20 +266,17 @@ body h1 {
     border-radius: 4px;
 }
 
-/* Эффект при наведении */
 .text-nav:hover {
     background-color: rgba(255, 187, 238, 0.2);
     color: #ffffff !important;
     transform: translateY(-2px);
 }
 
-/* Контейнер dropdown */
 .dropdown {
     position: relative;
     display: inline-block;
 }
 
-/* Кнопка "Одежда" */
 .dropdown-toggle {
     cursor: pointer;
     display: flex;
@@ -290,7 +285,6 @@ body h1 {
     padding: 8px 12px;
 }
 
-/* Маленькая стрелочка */
 .dropdown-toggle::after {
     content: "▼";
     font-size: 10px;
@@ -299,12 +293,10 @@ body h1 {
     opacity: 0.7;
 }
 
-/* Поворот стрелки при наведении */
 .dropdown:hover .dropdown-toggle::after {
     transform: rotate(180deg);
 }
 
-/* Выпадающее меню */
 .dropdown-menu-custom {
     position: absolute;
     top: 100%;
@@ -325,14 +317,12 @@ body h1 {
     box-shadow: 0 10px 20px rgba(0, 0, 0, 0.3);
 }
 
-/* Показываем меню при наведении */
 .dropdown:hover .dropdown-menu-custom {
     opacity: 1;
     visibility: visible;
     transform: translateY(0);
 }
 
-/* Пункты выпадающего меню */
 .dropdown-menu-custom a {
     color: rgb(255, 187, 238) !important;
     padding: 10px 20px !important;
@@ -343,7 +333,6 @@ body h1 {
     white-space: nowrap;
 }
 
-/* Эффект при наведении на пункты меню */
 .dropdown-menu-custom a:hover {
     background: rgba(255, 187, 238, 0.2);
     color: #ffffff !important;
@@ -395,7 +384,6 @@ body h1 {
 }
 
 /* ===== АДАПТАЦИЯ ДЛЯ РАЗНЫХ ЭКРАНОВ ===== */
-
 @media (min-width: 576px) {
     body { font-size: 15px; }
     .logo-img { max-height: 70px; }
@@ -436,7 +424,6 @@ body h1 {
     .container { padding: 0 30px; }
 }
 
-/* Дополнительная адаптация для экранов */
 @media (max-width: 480px) {
     .head-2 { padding: 5px; }
     .navbar { gap: 3px; }
@@ -444,6 +431,31 @@ body h1 {
     .dropdown-toggle { padding: 6px 8px; }
     .dropdown-menu-custom { min-width: 140px; }
     .dropdown-menu-custom a { font-size: 12px; padding: 8px 15px !important; }
+    
+    .card {
+        height: 340px !important;
+    }
+    
+    .card a {
+        height: 160px;
+    }
+    
+    .card-title {
+        font-size: 13px !important;
+    }
+    
+    .card-text {
+        font-size: 11px !important;
+    }
+    
+    .add-to-cart-btn {
+        font-size: 10px;
+        padding: 5px 8px;
+    }
+    
+    .gift-icon img {
+        max-height: 30px;
+    }
 }
 
 @media (min-width: 481px) and (max-width: 576px) {
@@ -485,8 +497,6 @@ body h1 {
 }
 
 /* ===== КНОПКИ ПРОКРУТКИ ===== */
-
-/* Контейнер для кнопок */
 .scroll-buttons {
     position: fixed;
     bottom: 30px;
@@ -497,7 +507,6 @@ body h1 {
     z-index: 999;
 }
 
-/* Общие стили для кнопок */
 .scroll-btn {
     width: 50px;
     height: 50px;
@@ -518,25 +527,21 @@ body h1 {
     font-size: 20px;
 }
 
-/* Обе кнопки одинакового стиля */
 #scrollToTop, #socialButton {
     background: linear-gradient(135deg, #ff70ae, #ff529d);
 }
 
-/* Показываем кнопки */
 .scroll-btn.show {
     opacity: 1;
     visibility: visible;
     transform: translateY(0);
 }
 
-/* Эффект при наведении */
 .scroll-btn:hover {
     transform: scale(1.1);
     box-shadow: 0 6px 20px rgba(255, 82, 157, 0.6);
 }
 
-/* Адаптация для мобильных */
 @media (max-width: 768px) {
     .scroll-buttons {
         bottom: 20px;
@@ -564,18 +569,16 @@ body h1 {
     }
 }
 
-
 /* ===== ИНФО-БЛОКИ С РАМКАМИ ===== */
 .info-1, .info-2 {
     display: flex;
     align-items: center;
-    justify-content: space-between; /* Рамки по краям, контент по центру */
+    justify-content: space-between;
     width: 100%;
     margin: 30px 0;
     gap: 20px;
 }
 
-/* Левые рамки */
 .info-rm:first-child {
     display: flex;
     align-items: center;
@@ -583,7 +586,6 @@ body h1 {
     flex: 0 0 auto;
 }
 
-/* Правые рамки */
 .info-rm:last-child {
     display: flex;
     align-items: center;
@@ -597,7 +599,6 @@ body h1 {
     display: block;
 }
 
-/* Центральный блок с контентом */
 .info-main {
     flex: 0 1 auto;
     display: flex;
@@ -609,7 +610,7 @@ body h1 {
     padding: 15px 30px;
     min-width: 300px;
     max-width: 700px;
-    margin: 0 auto; /* Центрируем */
+    margin: 0 auto;
 }
 
 .info-main img {
@@ -634,7 +635,6 @@ body h1 {
     font-weight: 500;
 }
 
-/* ===== МОБИЛЬНАЯ ВЕРСИЯ ===== */
 @media screen and (max-width: 992px) {
     .info-main {
         padding: 15px 25px;
@@ -661,7 +661,7 @@ body h1 {
     }
     
     .info-rm {
-        display: none !important; /* Прячем рамки на мобильных */
+        display: none !important;
     }
     
     .info-main {
@@ -709,105 +709,11 @@ body h1 {
     }
 }
 
-/* Фикс для контейнера */
-.container {
-    width: 100%;
-    max-width: 1400px;
-    margin: 0 auto;
-    padding: 0 20px;
-}
-
-/* Убираем возможные конфликты */
-.info-1, .info-2 {
-    box-sizing: border-box;
-}
-
 .info-rm {
-    pointer-events: none; /* Чтобы рамки не мешали кликам */
+    pointer-events: none;
 }
-
-
-
-/* ПОИСК */
 
 /* ===== СТИЛИ ПОИСКА ===== */
-.search-container {
-    position: relative;
-    max-width: 500px;
-    margin: 20px auto 30px;
-    width: 90%;
-}
-
-.search-input {
-    width: 100%;
-    padding: 12px 40px 12px 20px;
-    font-size: 16px;
-    border: 2px solid #ff70ae;
-    border-radius: 25px;
-    background: white;
-    outline: none;
-    transition: all 0.3s ease;
-    font-family: inherit;
-}
-
-.search-input:focus {
-    border-color: #ff529d;
-    box-shadow: 0 0 10px rgba(255, 82, 157, 0.3);
-}
-
-.search-clear {
-    position: absolute;
-    right: 12px;
-    top: 50%;
-    transform: translateY(-50%);
-    background: none;
-    border: none;
-    font-size: 20px;
-    cursor: pointer;
-    color: #999;
-    padding: 5px;
-    border-radius: 50%;
-    transition: all 0.2s;
-}
-
-.search-clear:hover {
-    color: #ff529d;
-    background: #f0f0f0;
-}
-
-/* Сообщение, когда ничего не найдено */
-.no-results {
-    text-align: center;
-    padding: 40px;
-    color: #ff70ae;
-    font-size: 18px;
-    background: rgba(255, 255, 255, 0.95);
-    border-radius: 12px;
-    margin: 30px 0;
-    width: 100%;
-    border: 2px dashed #ff70ae;
-}
-
-@media (max-width: 768px) {
-    .search-input {
-        padding: 10px 35px 10px 15px;
-        font-size: 14px;
-    }
-    
-    .no-results {
-        padding: 30px;
-        font-size: 16px;
-    }
-}
-
-.highlight {
-    background-color: #ff70ae;
-    color: white;
-    padding: 0 2px;
-    border-radius: 3px;
-}
-
-/* ===== ПОИСК И ФИЛЬТРЫ ===== */
 .search-filters {
     display: flex;
     flex-wrap: wrap;
@@ -823,6 +729,7 @@ body h1 {
     position: relative;
     flex: 2;
     min-width: 250px;
+    margin: 0;
 }
 
 .search-input {
@@ -861,7 +768,6 @@ body h1 {
     background: #f0f0f0;
 }
 
-/* Фильтр чекбокс */
 .filter-container {
     flex: 1;
     min-width: 150px;
@@ -885,7 +791,6 @@ body h1 {
     background: rgba(255, 112, 174, 0.4);
 }
 
-/* Скрываем стандартный чекбокс */
 .filter-checkbox input {
     position: absolute;
     opacity: 0;
@@ -894,7 +799,6 @@ body h1 {
     width: 0;
 }
 
-/* Создаем кастомный чекбокс */
 .checkmark {
     position: relative;
     display: inline-block;
@@ -906,19 +810,16 @@ body h1 {
     transition: all 0.2s;
 }
 
-/* При наведении */
 .filter-checkbox:hover .checkmark {
     border-color: #ff529d;
     background-color: #fff0f5;
 }
 
-/* При выборе */
 .filter-checkbox input:checked ~ .checkmark {
     background-color: #ff70ae;
     border-color: #ff70ae;
 }
 
-/* Галочка */
 .filter-checkbox .checkmark:after {
     content: "";
     position: absolute;
@@ -936,7 +837,6 @@ body h1 {
     display: block;
 }
 
-/* Сообщение "ничего не найдено" */
 .no-results {
     text-align: center;
     padding: 40px;
@@ -976,173 +876,14 @@ body h1 {
         font-size: 14px;
         padding: 8px 15px;
     }
-}
-
-/* ===== ПЛАВАЮЩИЕ КНОПКИ С КОРЗИНОЙ ===== */
-.scroll-buttons {
-    position: fixed;
-    bottom: 30px;
-    right: 30px;
-    display: flex;
-    flex-direction: column;
-    gap: 15px;
-    z-index: 999;
-}
-
-/* Общие стили для всех кнопок */
-.scroll-btn {
-    width: 50px;
-    height: 50px;
-    border-radius: 50%;
-    background: linear-gradient(135deg, #ff70ae, #ff529d);
-    border: 2px solid rgba(255, 255, 255, 0.3);
-    box-shadow: 0 4px 15px rgba(255, 82, 157, 0.4);
-    cursor: pointer;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    transition: all 0.3s ease;
-    opacity: 0;
-    visibility: hidden;
-    transform: translateY(20px);
-    color: white;
-    text-decoration: none;
-    font-size: 24px;
-    position: relative;
-}
-
-/* Показываем кнопки */
-.scroll-btn.show {
-    opacity: 1;
-    visibility: visible;
-    transform: translateY(0);
-}
-
-/* Эффект при наведении */
-.scroll-btn:hover {
-    transform: scale(1.1);
-    box-shadow: 0 6px 20px rgba(255, 82, 157, 0.6);
-}
-
-/* Специальные стили для кнопки корзины */
-.cart-btn {
-    font-size: 22px;
-    font-weight: normal;
-}
-
-/* Счётчик на плавающей кнопке */
-.cart-count-float {
-    position: absolute;
-    top: -5px;
-    right: -5px;
-    background: #ff3b6f;
-    color: white;
-    border-radius: 50%;
-    padding: 2px 6px;
-    font-size: 11px;
-    font-weight: bold;
-    min-width: 20px;
-    text-align: center;
-    box-shadow: 0 2px 5px rgba(0,0,0,0.2);
-    border: 2px solid white;
-}
-
-/* Кнопка соцсети */
-#socialButton {
-    background: linear-gradient(135deg, #ff70ae, #ff529d);
-}
-
-#socialButton img {
-    max-height: 30px;
-    width: auto;
-    filter: brightness(0) invert(1);
-}
-
-/* Кнопка наверх */
-#scrollToTop {
-    font-size: 28px;
-    font-weight: bold;
-}
-
-/* Адаптация для мобильных */
-@media (max-width: 768px) {
-    .scroll-buttons {
-        bottom: 20px;
-        right: 20px;
-        gap: 12px;
-    }
     
-    .scroll-btn {
-        width: 45px;
-        height: 45px;
-        font-size: 20px;
-    }
-    
-    .cart-btn {
-        font-size: 18px;
-    }
-    
-    .cart-count-float {
-        font-size: 10px;
-        padding: 2px 5px;
-        min-width: 18px;
-        top: -4px;
-        right: -4px;
-    }
-    
-    #socialButton img {
-        max-height: 25px;
-    }
-}
-
-@media (max-width: 480px) {
-    .scroll-buttons {
-        bottom: 15px;
-        right: 15px;
-        gap: 10px;
-    }
-    
-    .scroll-btn {
-        width: 40px;
-        height: 40px;
-        font-size: 18px;
-    }
-    
-    .cart-btn {
+    .no-results {
+        padding: 30px;
         font-size: 16px;
     }
-    
-    .cart-count-float {
-        font-size: 9px;
-        padding: 1px 4px;
-        min-width: 16px;
-    }
 }
 
-/* Анимация появления */
-@keyframes bounceIn {
-    0% {
-        opacity: 0;
-        transform: scale(0.3);
-    }
-    50% {
-        opacity: 1;
-        transform: scale(1.05);
-    }
-    100% {
-        opacity: 1;
-        transform: scale(1);
-    }
-}
-
-.scroll-btn.show {
-    animation: bounceIn 0.3s ease;
-}
-
-
-
-
-/* ===== ФИКСИРОВАННАЯ КОРЗИНА СПРАВА ВВЕРХУ ===== */
+/* ===== ФИКСИРОВАННАЯ КОРЗИНА ===== */
 .fixed-cart {
     position: fixed;
     top: 20px;
@@ -1162,6 +903,7 @@ body h1 {
     transition: all 0.3s ease;
     backdrop-filter: blur(5px);
     border: 2px solid rgba(255, 255, 255, 0.3);
+    animation: slideInRight 0.5s ease;
 }
 
 .fixed-cart:hover {
@@ -1182,7 +924,17 @@ body h1 {
     box-shadow: 0 2px 5px rgba(0,0,0,0.1);
 }
 
-/* Адаптация для мобильных */
+@keyframes slideInRight {
+    from {
+        transform: translateX(100%);
+        opacity: 0;
+    }
+    to {
+        transform: translateX(0);
+        opacity: 1;
+    }
+}
+
 @media (max-width: 768px) {
     .fixed-cart {
         top: 10px;
@@ -1213,205 +965,7 @@ body h1 {
     }
 }
 
-/* Анимация появления */
-@keyframes slideInRight {
-    from {
-        transform: translateX(100%);
-        opacity: 0;
-    }
-    to {
-        transform: translateX(0);
-        opacity: 1;
-    }
-}
-
-.fixed-cart {
-    animation: slideInRight 0.5s ease;
-}
-
-
-
-.cart-page {
-            max-width: 900px;
-            margin: 0 auto;
-            background: white;
-            border-radius: 15px;
-            overflow: hidden;
-            box-shadow: 0 5px 20px rgba(0,0,0,0.1);
-        }
-        
-        .cart-header {
-            background: linear-gradient(135deg, #ff70ae, #ff529d);
-            color: white;
-            padding: 20px;
-            text-align: center;
-        }
-        
-        .cart-header h2 {
-            margin: 0;
-            font-size: 24px;
-        }
-        
-        .cart-items {
-            padding: 20px;
-            max-height: 500px;
-            overflow-y: auto;
-        }
-        
-        .cart-item {
-            display: flex;
-            align-items: center;
-            gap: 15px;
-            padding: 15px;
-            border-bottom: 1px solid #eee;
-            transition: background 0.3s;
-        }
-        
-        .cart-item:hover {
-            background: #f9f9f9;
-        }
-        
-        .cart-item-img {
-            width: 60px;
-            height: 60px;
-            object-fit: cover;
-            border-radius: 8px;
-        }
-        
-        .cart-item-info {
-            flex: 1;
-        }
-        
-        .cart-item-title {
-            font-size: 16px;
-            font-weight: bold;
-            color: #333;
-        }
-        
-        .cart-item-price {
-            color: #ff529d;
-            font-weight: bold;
-            margin-top: 5px;
-        }
-        
-        .cart-item-remove {
-            background: none;
-            border: none;
-            color: #999;
-            cursor: pointer;
-            font-size: 20px;
-            padding: 5px;
-            transition: all 0.3s;
-        }
-        
-        .cart-item-remove:hover {
-            color: #ff529d;
-            transform: scale(1.1);
-        }
-        
-        .cart-summary {
-            padding: 20px;
-            background: #f9f9f9;
-            text-align: center;
-            border-top: 2px solid #ff70ae;
-        }
-        
-        .cart-total {
-            font-size: 24px;
-            font-weight: bold;
-            color: #ff529d;
-            margin-bottom: 20px;
-        }
-        
-        .btn-copy {
-            background: #4caf50;
-            color: white;
-            border: none;
-            padding: 12px 30px;
-            border-radius: 25px;
-            font-size: 16px;
-            cursor: pointer;
-            transition: all 0.3s;
-            margin: 5px;
-        }
-        
-        .btn-copy:hover {
-            background: #45a049;
-            transform: scale(1.05);
-        }
-        
-        .btn-telegram {
-            background: #ff70ae;
-            color: white;
-            text-decoration: none;
-            padding: 12px 30px;
-            border-radius: 25px;
-            font-size: 16px;
-            display: inline-block;
-            transition: all 0.3s;
-            margin: 5px;
-        }
-        
-        .btn-telegram:hover {
-            background: #ff529d;
-            transform: scale(1.05);
-            color: white;
-        }
-        
-        .empty-cart {
-            text-align: center;
-            padding: 60px;
-            background: white;
-        }
-        
-        .empty-cart p {
-            font-size: 18px;
-            color: #999;
-            margin-bottom: 20px;
-        }
-        
-        .empty-cart a {
-            background: #ff70ae;
-            color: white;
-            padding: 10px 25px;
-            border-radius: 25px;
-            text-decoration: none;
-        }
-        
-        .cart-note {
-            font-size: 12px;
-            color: #999;
-            margin-top: 15px;
-        }
-        
-        .clear-cart {
-            background: none;
-            border: 1px solid #ff529d;
-            color: #ff529d;
-            padding: 8px 20px;
-            border-radius: 20px;
-            cursor: pointer;
-            margin-top: 10px;
-            transition: all 0.3s;
-        }
-        
-        .clear-cart:hover {
-            background: #ff529d;
-            color: white;
-        }
-
-
-
-        /* ===== КНОПКА "ДОБАВИТЬ В КОРЗИНУ" ===== */
-
-/* Основные стили кнопки */
-
-.add-to-cart{
-    width: 100%;
-    display: flex;
-    justify-content: center;
-}
-
+/* ===== КНОПКА "ДОБАВИТЬ В КОРЗИНУ" ===== */
 .add-to-cart-btn {
     background: linear-gradient(135deg, #ff70ae, #ff529d);
     color: white;
@@ -1419,7 +973,6 @@ body h1 {
     padding: 8px 15px;
     border-radius: 25px;
     cursor: pointer;
-    margin-top: 10px;
     transition: all 0.3s ease;
     font-size: 14px;
     font-weight: 500;
@@ -1433,31 +986,20 @@ body h1 {
     overflow: hidden;
 }
 
-/* Эффект при наведении */
 .add-to-cart-btn:hover {
     background: linear-gradient(135deg, #ff529d, #ff3b6f);
     transform: translateY(-2px);
     box-shadow: 0 4px 12px rgba(255, 82, 157, 0.4);
 }
 
-/* Эффект при нажатии */
 .add-to-cart-btn:active {
     transform: translateY(0);
-    box-shadow: 0 2px 5px rgba(255, 82, 157, 0.3);
 }
 
-/* Состояние "Добавлено" */
 .add-to-cart-btn.added {
     background: linear-gradient(135deg, #4caf50, #45a049);
-    box-shadow: 0 2px 5px rgba(76, 175, 80, 0.3);
 }
 
-.add-to-cart-btn.added:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 4px 12px rgba(76, 175, 80, 0.4);
-}
-
-/* Эффект пульсации при добавлении */
 @keyframes ripple {
     0% {
         transform: scale(0);
@@ -1469,202 +1011,9 @@ body h1 {
     }
 }
 
-.add-to-cart-btn .ripple {
-    position: absolute;
-    border-radius: 50%;
-    background-color: rgba(255, 255, 255, 0.7);
-    transform: scale(0);
-    animation: ripple 0.6s linear;
-    pointer-events: none;
-}
-
-/* Иконка корзины в кнопке */
-.add-to-cart-btn::before {
-    font-size: 14px;
-    transition: transform 0.3s ease;
-}
-
-.add-to-cart-btn:hover::before {
-    transform: scale(1.1);
-}
-
-/* Состояние "Добавлено" меняет иконку */
-.add-to-cart-btn.added::before {
-    content: "✓";
-    font-weight: bold;
-}
-
-/* Для мобильных устройств */
 @media (max-width: 768px) {
-    .add-to-cart-btn {
-        padding: 8px 12px;
-        font-size: 13px;
-    }
-    
-    .add-to-cart-btn::before {
-        font-size: 13px;
-    }
-}
-
-@media (max-width: 480px) {
     .add-to-cart-btn {
         padding: 6px 10px;
         font-size: 12px;
-    }
-    
-    .add-to-cart-btn::before {
-        font-size: 12px;
-    }
-}
-
-/* Альтернативный вариант: кнопка с градиентом и обводкой */
-.add-to-cart-btn-alt {
-    background: transparent;
-    color: #ff529d;
-    border: 2px solid #ff529d;
-    padding: 8px 15px;
-    border-radius: 25px;
-    cursor: pointer;
-    margin-top: 30px;
-    transition: all 0.3s ease;
-    font-size: 14px;
-    font-weight: 500;
-    width: 100%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 8px;
-}
-
-.add-to-cart-btn-alt:hover {
-    background: linear-gradient(135deg, #ff70ae, #ff529d);
-    color: white;
-    border-color: transparent;
-    transform: translateY(-2px);
-    box-shadow: 0 4px 12px rgba(255, 82, 157, 0.4);
-}
-
-/* Вариант с иконкой только на мобильных */
-@media (max-width: 576px) {
-    .add-to-cart-btn span {
-        display: none;
-    }
-    
-    .add-to-cart-btn {
-        padding: 8px;
-        font-size: 0;
-    }
-    
-    .add-to-cart-btn::before {
-        font-size: 16px;
-        margin-right: 0;
-    }
-}
-
-/* Анимация загрузки (если нужно) */
-@keyframes spin {
-    0% { transform: rotate(0deg); }
-    100% { transform: rotate(360deg); }
-}
-
-.add-to-cart-btn.loading {
-    pointer-events: none;
-    opacity: 0.7;
-}
-
-.add-to-cart-btn.loading::before {
-    content: "⏳";
-    animation: spin 1s linear infinite;
-}
-
-/* Для карточек с бонусом (можно выделить кнопку) */
-.card .gift-badge + .add-to-cart-btn {
-    background: linear-gradient(135deg, #ffd700, #ffb347);
-    box-shadow: 0 2px 5px rgba(255, 215, 0, 0.3);
-}
-
-.card .gift-badge + .add-to-cart-btn:hover {
-    background: linear-gradient(135deg, #ffb347, #ff9500);
-    box-shadow: 0 4px 12px rgba(255, 215, 0, 0.4);
-}
-
-.add-to-cart-btn:hover {
-    background: linear-gradient(135deg, #ff529d, #ff3b6f);
-    transform: translateY(-2px);
-}
-
-/* Иконка подарка */
-.gift-icon {
-    flex-shrink: 0;
-    display: flex;
-    align-items: center;
-}
-
-.gift-icon img {
-    max-height: 45px;
-    width: auto;
-    display: block;
-}
-
-/* Адаптация для мобильных */
-@media (max-width: 768px) {
-    .card {
-        height: 340px;
-    }
-    
-    .card a {
-        height: 160px;
-    }
-    
-    .card-content {
-        padding: 10px;
-    }
-    
-    .card-title {
-        font-size: 13px !important;
-    }
-    
-    .card-text {
-        font-size: 11px !important;
-    }
-    
-    .add-to-cart-btn {
-        font-size: 11px;
-        padding: 6px 10px;
-    }
-    
-    .gift-icon img {
-        max-height: 35px;
-    }
-}
-
-@media (max-width: 480px) {
-    .card {
-        height: 320px;
-    }
-    
-    .card a {
-        height: 140px;
-    }
-    
-    .card-content {
-        padding: 8px;
-    }
-    
-    .card-title {
-        font-size: 12px !important;
-    }
-    
-    .card-text {
-        font-size: 10px !important;
-    }
-    
-    .add-to-cart-btn {
-        font-size: 10px;
-        padding: 5px 8px;
-    }
-    
-    .gift-icon img {
-        max-height: 30px;
     }
 }

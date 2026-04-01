@@ -13,8 +13,9 @@ document.addEventListener('DOMContentLoaded', function() {
     
     // Функция для проверки, является ли товар бонусным
     function isBonusCard(card) {
-        // Проверяем, есть ли в карточке иконка подарка (бонуса)
-        const giftIcon = card.querySelector('.card-box img[src*="gift"]');
+        // Ищем иконку подарка в новой структуре (.gift-icon) и в старой (.card-box) для обратной совместимости
+        const giftIcon = card.querySelector('.gift-icon img, .card-box img[src*="gift"]');
+        
         // Проверяем, есть ли надпись "Бонус" в названии или тексте
         const title = card.querySelector('.card-title');
         const titleText = title ? title.textContent.toLowerCase() : '';
