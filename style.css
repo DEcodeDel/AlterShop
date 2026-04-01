@@ -1017,3 +1017,250 @@ body h1 {
         font-size: 12px;
     }
 }
+
+/* ===== СТИЛИ ДЛЯ СТРАНИЦЫ КОРЗИНЫ ===== */
+
+.cart-page {
+    max-width: 900px;
+    margin: 0 auto;
+    background: white;
+    border-radius: 15px;
+    overflow: hidden;
+    box-shadow: 0 5px 20px rgba(0,0,0,0.1);
+}
+
+.cart-header {
+    background: linear-gradient(135deg, #ff70ae, #ff529d);
+    color: white;
+    padding: 20px;
+    text-align: center;
+}
+
+.cart-header h2 {
+    margin: 0;
+    font-size: 24px;
+}
+
+.cart-items {
+    padding: 20px;
+    max-height: 500px;
+    overflow-y: auto;
+}
+
+.cart-item {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    padding: 15px;
+    border-bottom: 1px solid #eee;
+    transition: background 0.3s;
+}
+
+.cart-item:hover {
+    background: #f9f9f9;
+}
+
+.cart-item-img {
+    width: 60px;
+    height: 60px;
+    object-fit: cover;
+    border-radius: 8px;
+}
+
+.cart-item-info {
+    flex: 1;
+}
+
+.cart-item-title {
+    font-size: 16px;
+    font-weight: bold;
+    color: #333;
+}
+
+.cart-item-price {
+    color: #ff529d;
+    font-weight: bold;
+    margin-top: 5px;
+}
+
+.cart-item-remove {
+    background: none;
+    border: none;
+    color: #999;
+    cursor: pointer;
+    font-size: 20px;
+    padding: 5px;
+    transition: all 0.3s;
+}
+
+.cart-item-remove:hover {
+    color: #ff529d;
+    transform: scale(1.1);
+}
+
+.cart-summary {
+    padding: 20px;
+    background: #f9f9f9;
+    text-align: center;
+    border-top: 2px solid #ff70ae;
+}
+
+.cart-total {
+    font-size: 24px;
+    font-weight: bold;
+    color: #ff529d;
+    margin-bottom: 20px;
+}
+
+.btn-copy {
+    background: #4caf50;
+    color: white;
+    border: none;
+    padding: 12px 30px;
+    border-radius: 25px;
+    font-size: 16px;
+    cursor: pointer;
+    transition: all 0.3s;
+    margin: 5px;
+}
+
+.btn-copy:hover {
+    background: #45a049;
+    transform: scale(1.05);
+}
+
+.btn-telegram {
+    background: #ff70ae;
+    color: white;
+    text-decoration: none;
+    padding: 12px 30px;
+    border-radius: 25px;
+    font-size: 16px;
+    display: inline-block;
+    transition: all 0.3s;
+    margin: 5px;
+}
+
+.btn-telegram:hover {
+    background: #ff529d;
+    transform: scale(1.05);
+    color: white;
+}
+
+.empty-cart {
+    text-align: center;
+    padding: 60px;
+    background: white;
+}
+
+.empty-cart p {
+    font-size: 18px;
+    color: #999;
+    margin-bottom: 20px;
+}
+
+.empty-cart a {
+    background: #ff70ae;
+    color: white;
+    padding: 10px 25px;
+    border-radius: 25px;
+    text-decoration: none;
+}
+
+.cart-note {
+    font-size: 12px;
+    color: #999;
+    margin-top: 15px;
+}
+
+.clear-cart {
+    background: none;
+    border: 1px solid #ff529d;
+    color: #ff529d;
+    padding: 8px 20px;
+    border-radius: 20px;
+    cursor: pointer;
+    margin-top: 10px;
+    transition: all 0.3s;
+}
+
+.clear-cart:hover {
+    background: #ff529d;
+    color: white;
+}
+
+/* Адаптация для мобильных */
+@media (max-width: 768px) {
+    .cart-page {
+        margin: 10px;
+    }
+    
+    .cart-header h2 {
+        font-size: 20px;
+    }
+    
+    .cart-items {
+        padding: 15px;
+    }
+    
+    .cart-item {
+        gap: 10px;
+        padding: 12px;
+    }
+    
+    .cart-item-img {
+        width: 50px;
+        height: 50px;
+    }
+    
+    .cart-item-title {
+        font-size: 14px;
+    }
+    
+    .cart-item-price {
+        font-size: 13px;
+    }
+    
+    .cart-total {
+        font-size: 20px;
+    }
+    
+    .btn-copy, .btn-telegram {
+        padding: 10px 20px;
+        font-size: 14px;
+    }
+    
+    .empty-cart {
+        padding: 40px;
+    }
+    
+    .empty-cart p {
+        font-size: 16px;
+    }
+}
+
+@media (max-width: 480px) {
+    .cart-item {
+        flex-wrap: wrap;
+    }
+    
+    .cart-item-info {
+        width: calc(100% - 70px);
+    }
+    
+    .cart-item-remove {
+        margin-left: auto;
+    }
+    
+    .cart-summary {
+        padding: 15px;
+    }
+    
+    .btn-copy, .btn-telegram {
+        padding: 8px 16px;
+        font-size: 13px;
+        display: block;
+        width: 100%;
+        margin: 8px 0;
+    }
+}
