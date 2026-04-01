@@ -1,0 +1,560 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AlterShop - Женские облики</title>
+
+    <link rel="stylesheet" href="style.css">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/photoswipe@5.4.4/dist/photoswipe.min.css" />
+
+    <!-- Для большинства браузеров (PNG 32x32) -->
+    <link rel="icon" type="image/png" sizes="32x32" href="img/logo.png">
+    <!-- Для старых IE и стандартный favicon -->
+    <link rel="icon" type="image/x-icon" href="img/logo.png">
+    <!-- Для Apple (iPhone/iPad) -->
+    <link rel="apple-touch-icon" sizes="180x180" href="img/logo.png">
+</head>
+<body class="body">
+    <header class="header">
+        <div class="head">
+            <img class="logo-img" src="img\logo.png" height="80px" alt="logo-img">
+            <a href="index.html"><img class="logo-txt" src="img\AlterShop.png" height="60px" alt="logo-txt"></a>
+        </div>
+        <div class="head-2">
+            <nav class="navbar">
+                <a class="text-nav" style="padding-right: 5px;padding-left: 5px;" href="index.html">Актуальное</a>
+                <div class="dropdown">
+                <span class="text-nav dropdown-toggle">Одежда</span>
+                    <div class="dropdown-menu-custom">
+                        <a href="ОдеждаЖ.html">Женская</a>
+                        <a href="ОдеждаМ.html">Мужская</a>
+                    </div>
+                </div>
+                <div class="dropdown">
+                <span class="text-nav dropdown-toggle">Облики</span>
+                    <div class="dropdown-menu-custom">
+                        <a href="ОбликЖ.html">Женские</a>
+                        <a href="ОбликМ.html">Мужские</a>
+                    </div>
+                </div>
+                <a class="text-nav" href="Крылья.html">Крылья</a>
+                <a class="text-nav" href="Аксессуары.html">Аксессуары</a>
+                <a class="text-nav" style="padding-right: 5px;padding-left: 5px;" href="ТранспортРазвлечения.html">Транспорт/Развлечения</a>
+                <a class="text-nav" href="Титулы.html">Титулы</a>
+                <div class="dropdown">
+                <span class="text-nav dropdown-toggle">Шоу</span>
+                    <div class="dropdown-menu-custom">
+                        <a href="ШоуИнт.html">Интерактивы</a>
+                        <a href="ШоуФон.html">Фоны</a>
+                    </div>
+                </div>
+                <a class="text-nav" href="ФоныРамки.html">Фоны/Рамки</a>
+                <a class="text-nav" href="Разное.html">Разное</a>
+            </nav>
+        </div>
+    </header>
+    
+    <!-- Фиксированная корзина справа вверху -->
+    <a href="cart.html" class="fixed-cart" id="fixedCart">
+        🛒 <span id="cartCountFixed" class="cart-count-fixed">0</span>
+    </a>
+
+    <h1>Женские облики</h1>
+
+    <main class="container">
+        
+        <div class="info-1">
+            <div class="info-rm">
+                <img src="img/ramka.png" alt="">
+            </div>
+            <div class="info-main">
+                <img src="img/gift.png" alt="">
+                <h2>Бонус за покупку</h2>
+            </div>
+            <div class="info-rm">
+                <img src="img/ramka2.png" alt="">
+            </div>
+        </div>
+        <div class="info-2">
+            <div class="info-rm">
+                <img src="img/ramka.png" alt="">
+            </div>
+            <div class="info-main">
+                <img class="img-tg" src="img/vk.png" height="60px" alt="">
+                <a class="link-tg" href="https://t.me/sfchkk03">https://t.me/sfchkk03 - </a>
+                <h2>оформить заказ</h2>
+            </div>
+            <div class="info-rm">
+                <img src="img/ramka2.png" alt="">
+            </div>
+        </div>
+
+        <!-- Поиск и фильтры -->
+        <div class="search-filters">
+            <div class="search-container">
+                <input type="text" id="searchInput" placeholder="🔍 Поиск по названиям..." class="search-input">
+                <button id="searchClear" class="search-clear" style="display: none;">✖</button>
+            </div>
+            
+            <div class="filter-container">
+                <label class="filter-checkbox">
+                    <input type="checkbox" id="bonusFilter">
+                    <span class="checkmark"></span>
+                    🎁 Только бонусы
+                </label>
+            </div>
+        </div>
+
+        <div class="content">
+            <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-lg-4 g-3">
+                
+                <!-- Карточка 1 (с бонусом) -->
+                <div class="col">
+                    <div class="card">
+                        <a href="img/FaceFemale/Болезненный вид.png">
+                            <img class="img-card card-img-top" src="img/FaceFemale/Болезненный вид.png" alt="Болезненный вид">
+                        </a>
+                        <div class="card-content">
+                            <div class="card-body">
+                                <h5 class="card-title">Болезненный вид</h5>
+                                <p class="card-text">100 ₽</p>
+                            </div>
+                            <div class="card-footer">
+                                <button class="add-to-cart-btn" 
+                                        data-title="Болезненный вид" 
+                                        data-price="100" 
+                                        data-img="img/FaceFemale/Болезненный вид.png">
+                                    🛒 В корзину
+                                </button>
+                                <div class="gift-icon">
+                                    <img src="img/gift.png" height="50px" alt="Бонус">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Карточка 2 (с бонусом) -->
+                <div class="col">
+                    <div class="card">
+                        <a href="img/FaceFemale/Вампир.png">
+                            <img class="img-card card-img-top" src="img/FaceFemale/Вампир.png" alt="Вампир">
+                        </a>
+                        <div class="card-content">
+                            <div class="card-body">
+                                <h5 class="card-title">Вампир</h5>
+                                <p class="card-text">250 ₽</p>
+                            </div>
+                            <div class="card-footer">
+                                <button class="add-to-cart-btn" 
+                                        data-title="Вампир" 
+                                        data-price="250" 
+                                        data-img="img/FaceFemale/Вампир.png">
+                                    🛒 В корзину
+                                </button>
+                                <div class="gift-icon">
+                                    <img src="img/gift.png" height="50px" alt="Бонус">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Карточка 3 (без бонуса) -->
+                <div class="col">
+                    <div class="card">
+                        <a href="img/FaceFemale/Внимательная слушательница.png">
+                            <img class="img-card card-img-top" src="img/FaceFemale/Внимательная слушательница.png" alt="Внимательная слушательница">
+                        </a>
+                        <div class="card-content">
+                            <div class="card-body">
+                                <h5 class="card-title">Внимательная слушательница</h5>
+                                <p class="card-text">180 ₽</p>
+                            </div>
+                            <div class="card-footer">
+                                <button class="add-to-cart-btn" 
+                                        data-title="Внимательная слушательница" 
+                                        data-price="180" 
+                                        data-img="img/FaceFemale/Внимательная слушательница.png">
+                                    🛒 В корзину
+                                </button>
+                                <!-- Блок gift-icon отсутствует, так как бонуса нет -->
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Карточка 4 (с бонусом) -->
+                <div class="col">
+                    <div class="card">
+                        <a href="img/FaceFemale/Голубоглазая.png">
+                            <img class="img-card card-img-top" src="img/FaceFemale/Голубоглазая.png" alt="Голубоглазая">
+                        </a>
+                        <div class="card-content">
+                            <div class="card-body">
+                                <h5 class="card-title">Голубоглазая</h5>
+                                <p class="card-text">220 ₽</p>
+                            </div>
+                            <div class="card-footer">
+                                <button class="add-to-cart-btn" 
+                                        data-title="Голубоглазая" 
+                                        data-price="220" 
+                                        data-img="img/FaceFemale/Голубоглазая.png">
+                                    🛒 В корзину
+                                </button>
+                                <div class="gift-icon">
+                                    <img src="img/gift.png" height="50px" alt="Бонус">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Карточка 5 (с бонусом) -->
+                <div class="col">
+                    <div class="card">
+                        <a href="img/FaceFemale/Джей-долл.png">
+                            <img class="img-card card-img-top" src="img/FaceFemale/Джей-долл.png" alt="Джей-долл">
+                        </a>
+                        <div class="card-content">
+                            <div class="card-body">
+                                <h5 class="card-title">Джей-долл</h5>
+                                <p class="card-text">300 ₽</p>
+                            </div>
+                            <div class="card-footer">
+                                <button class="add-to-cart-btn" 
+                                        data-title="Джей-долл" 
+                                        data-price="300" 
+                                        data-img="img/FaceFemale/Джей-долл.png">
+                                    🛒 В корзину
+                                </button>
+                                <div class="gift-icon">
+                                    <img src="img/gift.png" height="50px" alt="Бонус">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Карточка 6 (с бонусом) -->
+                <div class="col">
+                    <div class="card">
+                        <a href="img/FaceFemale/Избалованная.png">
+                            <img class="img-card card-img-top" src="img/FaceFemale/Избалованная.png" alt="Избалованная">
+                        </a>
+                        <div class="card-content">
+                            <div class="card-body">
+                                <h5 class="card-title">Избалованная</h5>
+                                <p class="card-text">280 ₽</p>
+                            </div>
+                            <div class="card-footer">
+                                <button class="add-to-cart-btn" 
+                                        data-title="Избалованная" 
+                                        data-price="280" 
+                                        data-img="img/FaceFemale/Избалованная.png">
+                                    🛒 В корзину
+                                </button>
+                                <div class="gift-icon">
+                                    <img src="img/gift.png" height="50px" alt="Бонус">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Карточка 7 (с бонусом) -->
+                <div class="col">
+                    <div class="card">
+                        <a href="img/FaceFemale/Кареглазка.png">
+                            <img class="img-card card-img-top" src="img/FaceFemale/Кареглазка.png" alt="Кареглазка">
+                        </a>
+                        <div class="card-content">
+                            <div class="card-body">
+                                <h5 class="card-title">Кареглазка</h5>
+                                <p class="card-text">220 ₽</p>
+                            </div>
+                            <div class="card-footer">
+                                <button class="add-to-cart-btn" 
+                                        data-title="Кареглазка" 
+                                        data-price="220" 
+                                        data-img="img/FaceFemale/Кареглазка.png">
+                                    🛒 В корзину
+                                </button>
+                                <div class="gift-icon">
+                                    <img src="img/gift.png" height="50px" alt="Бонус">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Карточка 8 (с бонусом) -->
+                <div class="col">
+                    <div class="card">
+                        <a href="img/FaceFemale/Красавица.png">
+                            <img class="img-card card-img-top" src="img/FaceFemale/Красавица.png" alt="Красавица">
+                        </a>
+                        <div class="card-content">
+                            <div class="card-body">
+                                <h5 class="card-title">Красавица</h5>
+                                <p class="card-text">350 ₽</p>
+                            </div>
+                            <div class="card-footer">
+                                <button class="add-to-cart-btn" 
+                                        data-title="Красавица" 
+                                        data-price="350" 
+                                        data-img="img/FaceFemale/Красавица.png">
+                                    🛒 В корзину
+                                </button>
+                                <div class="gift-icon">
+                                    <img src="img/gift.png" height="50px" alt="Бонус">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Карточка 9 (с бонусом) -->
+                <div class="col">
+                    <div class="card">
+                        <a href="img/FaceFemale/Куколка.png">
+                            <img class="img-card card-img-top" src="img/FaceFemale/Куколка.png" alt="Куколка">
+                        </a>
+                        <div class="card-content">
+                            <div class="card-body">
+                                <h5 class="card-title">Куколка</h5>
+                                <p class="card-text">400 ₽</p>
+                            </div>
+                            <div class="card-footer">
+                                <button class="add-to-cart-btn" 
+                                        data-title="Куколка" 
+                                        data-price="400" 
+                                        data-img="img/FaceFemale/Куколка.png">
+                                    🛒 В корзину
+                                </button>
+                                <div class="gift-icon">
+                                    <img src="img/gift.png" height="50px" alt="Бонус">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Карточка 10 (с бонусом) -->
+                <div class="col">
+                    <div class="card">
+                        <a href="img/FaceFemale/Ласковая осень.png">
+                            <img class="img-card card-img-top" src="img/FaceFemale/Ласковая осень.png" alt="Ласковая осень">
+                        </a>
+                        <div class="card-content">
+                            <div class="card-body">
+                                <h5 class="card-title">Ласковая осень</h5>
+                                <p class="card-text">260 ₽</p>
+                            </div>
+                            <div class="card-footer">
+                                <button class="add-to-cart-btn" 
+                                        data-title="Ласковая осень" 
+                                        data-price="260" 
+                                        data-img="img/FaceFemale/Ласковая осень.png">
+                                    🛒 В корзину
+                                </button>
+                                <div class="gift-icon">
+                                    <img src="img/gift.png" height="50px" alt="Бонус">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Карточка 11 (с бонусом) -->
+                <div class="col">
+                    <div class="card">
+                        <a href="img/FaceFemale/Моника.png">
+                            <img class="img-card card-img-top" src="img/FaceFemale/Моника.png" alt="Моника">
+                        </a>
+                        <div class="card-content">
+                            <div class="card-body">
+                                <h5 class="card-title">Моника</h5>
+                                <p class="card-text">320 ₽</p>
+                            </div>
+                            <div class="card-footer">
+                                <button class="add-to-cart-btn" 
+                                        data-title="Моника" 
+                                        data-price="320" 
+                                        data-img="img/FaceFemale/Моника.png">
+                                    🛒 В корзину
+                                </button>
+                                <div class="gift-icon">
+                                    <img src="img/gift.png" height="50px" alt="Бонус">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Карточка 12 (с бонусом) -->
+                <div class="col">
+                    <div class="card">
+                        <a href="img/FaceFemale/Натали.png">
+                            <img class="img-card card-img-top" src="img/FaceFemale/Натали.png" alt="Натали">
+                        </a>
+                        <div class="card-content">
+                            <div class="card-body">
+                                <h5 class="card-title">Натали</h5>
+                                <p class="card-text">280 ₽</p>
+                            </div>
+                            <div class="card-footer">
+                                <button class="add-to-cart-btn" 
+                                        data-title="Натали" 
+                                        data-price="280" 
+                                        data-img="img/FaceFemale/Натали.png">
+                                    🛒 В корзину
+                                </button>
+                                <div class="gift-icon">
+                                    <img src="img/gift.png" height="50px" alt="Бонус">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Карточка 13 (без бонуса, пример если нужно добавить) -->
+                <!-- 
+                <div class="col">
+                    <div class="card">
+                        <a href="img/FaceFemale/Пример.png">
+                            <img class="img-card card-img-top" src="img/FaceFemale/Пример.png" alt="Пример">
+                        </a>
+                        <div class="card-content">
+                            <div class="card-body">
+                                <h5 class="card-title">Пример</h5>
+                                <p class="card-text">150 ₽</p>
+                            </div>
+                            <div class="card-footer">
+                                <button class="add-to-cart-btn" 
+                                        data-title="Пример" 
+                                        data-price="150" 
+                                        data-img="img/FaceFemale/Пример.png">
+                                    🛒 В корзину
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                -->
+                
+            </div>
+        </div>
+
+    </main>
+
+    <!-- Кнопки прокрутки -->
+    <div class="scroll-buttons">
+        <button class="scroll-btn" id="scrollToTop" aria-label="Наверх">↑</button>
+        <a href="https://t.me/sfchkk03" class="scroll-btn" id="socialButton" target="_blank" aria-label="Telegram">
+            <img src="img/vk.png" height="48px" alt="">
+        </a>
+    </div>
+
+    <footer class="footer">
+        &copy; AlterShop
+    </footer>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="search.js"></script>
+    <script src="cart.js"></script>
+    
+    <script type="module">
+        import PhotoSwipe from 'https://cdn.jsdelivr.net/npm/photoswipe@5.4.4/dist/photoswipe.esm.min.js';
+
+        document.addEventListener('DOMContentLoaded', function() {
+            const links = document.querySelectorAll('.card a');
+            const items = Array.from(links).map(link => {
+                const img = link.querySelector('img');
+                if (!img) return null;
+                return {
+                    src: link.href,
+                    width: 1000,
+                    height: 800,
+                    alt: img.alt,
+                    thumbnailSrc: img.src
+                };
+            }).filter(item => item !== null);
+
+            links.forEach((link, index) => {
+                link.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    const pswp = new PhotoSwipe({
+                        dataSource: items,
+                        index: index,
+                        bgOpacity: 0.9,
+                        showHideAnimationType: 'fade',
+                        closeOnClick: true,
+                        wheelToZoom: true,
+                        imageScaleMode: 'fit',
+                        imageScaleModeSecondary: 'fit',
+                        initialZoomLevel: 'fit',
+                        secondaryZoomLevel: 1.5,
+                        maxZoomLevel: 3,
+                    });
+                    pswp.init();
+                });
+            });
+        });
+    </script>
+
+    <script>
+        // Управление кнопками прокрутки
+        document.addEventListener('DOMContentLoaded', function() {
+            const scrollToTopBtn = document.getElementById('scrollToTop');
+            const socialBtn = document.getElementById('socialButton');
+            
+            function checkScrollPosition() {
+                if (window.scrollY > 300) {
+                    scrollToTopBtn.classList.add('show');
+                    socialBtn.classList.add('show');
+                } else {
+                    scrollToTopBtn.classList.remove('show');
+                    socialBtn.classList.remove('show');
+                }
+            }
+            
+            window.addEventListener('scroll', checkScrollPosition);
+            
+            scrollToTopBtn.addEventListener('click', function() {
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+            });
+            
+            checkScrollPosition();
+        });
+    </script>
+
+    <script>
+        // Для работы dropdown на мобильных устройствах
+        document.addEventListener('DOMContentLoaded', function() {
+            const dropdowns = document.querySelectorAll('.dropdown');
+            
+            dropdowns.forEach(dropdown => {
+                const toggle = dropdown.querySelector('.dropdown-toggle');
+                toggle.addEventListener('click', function(e) {
+                    if (window.innerWidth <= 768) {
+                        e.preventDefault();
+                        dropdowns.forEach(d => {
+                            if (d !== dropdown) d.classList.remove('active');
+                        });
+                        dropdown.classList.toggle('active');
+                    }
+                });
+            });
+            
+            document.addEventListener('click', function(e) {
+                if (!e.target.closest('.dropdown')) {
+                    dropdowns.forEach(dropdown => dropdown.classList.remove('active'));
+                }
+            });
+        });
+    </script>
+</body>
+</html>
