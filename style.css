@@ -1264,3 +1264,33 @@ body h1 {
         margin: 8px 0;
     }
 }
+
+/* Стили для кнопок количества в корзине */
+.cart-item-quantity {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.cart-item-quantity button {
+    background: #f0f0f0;
+    border: none;
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    cursor: pointer;
+    font-size: 16px;
+    font-weight: bold;
+    transition: all 0.3s;
+}
+
+.cart-item-quantity button:hover {
+    background: #ff70ae;
+    color: white;
+}
+
+.cart-item-quantity span {
+    min-width: 30px;
+    text-align: center;
+    font-weight: bold;
+}

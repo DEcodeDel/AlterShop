@@ -138,52 +138,63 @@ function showNotification(message) {
     }, 2000);
 }
 
+// Добавьте эту функцию в cart.js (или замените существующую renderCart)
+
 // Функция для отображения корзины на странице cart.html
 function renderCart() {
     const cart = getCart();
     const cartContainer = document.getElementById('cartItems');
     const cartTotal = document.getElementById('cartTotal');
+    const cartSummary = document.getElementById('cartSummary');
     const emptyCartDiv = document.getElementById('emptyCart');
-    const cartContentDiv = document.getElementById('cartContent');
+    const cartSummaryBlock = document.getElementById('cartSummaryBlock');
     
     if (!cartContainer) return;
     
     if (cart.length === 0) {
-        if (cartContentDiv) cartContentDiv.style.display = 'none';
+        if (cartContainer) cartContainer.style.display = 'none';
+        if (cartSummaryBlock) cartSummaryBlock.style.display = 'none';
         if (emptyCartDiv) emptyCartDiv.style.display = 'block';
+        if (cartSummary) cartSummary.textContent = '0 товаров';
         return;
     }
     
-    if (cartContentDiv) cartContentDiv.style.display = 'block';
+    if (cartContainer) cartContainer.style.display = 'block';
+    if (cartSummaryBlock) cartSummaryBlock.style.display = 'block';
     if (emptyCartDiv) emptyCartDiv.style.display = 'none';
     
     let total = 0;
+    let totalItems = 0;
     cartContainer.innerHTML = '';
     
-    cart.forEach((item, index) => {
+    cart.forEach((item) => {
         const itemTotal = item.price * item.quantity;
         total += itemTotal;
+        totalItems += item.quantity;
         
         const cartItem = document.createElement('div');
         cartItem.className = 'cart-item';
         cartItem.innerHTML = `
-            <img class="cart-item-img" src="${item.img}" alt="${item.title}">
+            <img class="cart-item-img" src="${item.img}" alt="${item.title}" onerror="this.src='img/gift.png'">
             <div class="cart-item-info">
-                <div class="cart-item-title">${item.title}</div>
+                <div class="cart-item-title">${escapeHtml(item.title)}</div>
                 <div class="cart-item-price">${item.price} ₽ × ${item.quantity} = ${itemTotal} ₽</div>
             </div>
-            <div style="display: flex; align-items: center; gap: 10px;">
-                <button class="cart-item-decrease" data-title="${item.title}" style="background: #f0f0f0; border: none; width: 30px; height: 30px; border-radius: 50%; cursor: pointer;">-</button>
-                <span style="min-width: 30px; text-align: center;">${item.quantity}</span>
-                <button class="cart-item-increase" data-title="${item.title}" style="background: #f0f0f0; border: none; width: 30px; height: 30px; border-radius: 50%; cursor: pointer;">+</button>
+            <div class="cart-item-quantity">
+                <button class="cart-item-decrease" data-title="${escapeHtml(item.title)}">-</button>
+                <span>${item.quantity}</span>
+                <button class="cart-item-increase" data-title="${escapeHtml(item.title)}">+</button>
             </div>
-            <button class="cart-item-remove" data-title="${item.title}">🗑️</button>
+            <button class="cart-item-remove" data-title="${escapeHtml(item.title)}">🗑️</button>
         `;
         cartContainer.appendChild(cartItem);
     });
     
     if (cartTotal) {
         cartTotal.textContent = `${total} ₽`;
+    }
+    if (cartSummary) {
+        cartSummary.textContent = `${totalItems} товар(ов) на сумму ${total} ₽`;
     }
     
     // Добавляем обработчики событий для кнопок в корзине
@@ -197,6 +208,7 @@ function renderCart() {
     document.querySelectorAll('.cart-item-decrease').forEach(btn => {
         btn.addEventListener('click', (e) => {
             const title = btn.dataset.title;
+            const cart = getCart();
             const item = cart.find(i => i.title === title);
             if (item) {
                 updateQuantity(title, item.quantity - 1);
@@ -207,12 +219,20 @@ function renderCart() {
     document.querySelectorAll('.cart-item-increase').forEach(btn => {
         btn.addEventListener('click', (e) => {
             const title = btn.dataset.title;
+            const cart = getCart();
             const item = cart.find(i => i.title === title);
             if (item) {
                 updateQuantity(title, item.quantity + 1);
             }
         });
     });
+}
+
+// Функция для экранирования HTML (защита от XSS)
+function escapeHtml(text) {
+    const div = document.createElement('div');
+    div.textContent = text;
+    return div.innerHTML;
 }
 
 // Функция для копирования состава корзины
