@@ -40,28 +40,17 @@ function addToCart(title, price, img) {
     const currentCategory = getCurrentCategory();
     const needsGender = needsGenderSelection(currentCategory);
     
-    // Уникальный ключ для товара (с учетом категории и пола, если нужен)
-    let existingItem = null;
+    // Создаем уникальный ID для товара
+    const itemId = `${title}_${currentCategory}`;
     
-    if (needsGender) {
-        // Для товаров с выбором пола - ищем точное совпадение включая пол
-        existingItem = cart.find(item => 
-            item.title === title && 
-            item.category === currentCategory &&
-            item.gender === (item.gender || 'Не выбран')
-        );
-    } else {
-        // Для товаров без выбора пола - просто по названию и категории
-        existingItem = cart.find(item => 
-            item.title === title && 
-            item.category === currentCategory
-        );
-    }
+    // Ищем существующий товар
+    let existingItem = cart.find(item => item.id === itemId);
     
     if (existingItem) {
         existingItem.quantity += 1;
     } else {
         cart.push({
+            id: itemId,
             title: title,
             price: parseInt(price),
             img: img,
@@ -89,22 +78,22 @@ function addToCart(title, price, img) {
 }
 
 // Функция для изменения пола товара в корзине
-function updateGender(title, newGender) {
+function updateGender(itemId, newGender) {
     const cart = getCart();
-    const item = cart.find(item => item.title === title && item.needsGender === true);
+    const item = cart.find(item => item.id === itemId);
     
-    if (item) {
+    if (item && item.needsGender) {
         item.gender = newGender;
         saveCart(cart);
         renderCart();
-        showNotification(`👤 Пол для "${title}" изменен на ${newGender}`);
+        showNotification(`👤 Пол для "${item.title}" изменен на ${newGender}`);
     }
 }
 
 // Функция для удаления товара из корзины
-function removeFromCart(title) {
+function removeFromCart(itemId) {
     let cart = getCart();
-    cart = cart.filter(item => item.title !== title);
+    cart = cart.filter(item => item.id !== itemId);
     saveCart(cart);
     
     if (window.location.pathname.includes('cart.html')) {
@@ -113,13 +102,13 @@ function removeFromCart(title) {
 }
 
 // Функция для изменения количества товара
-function updateQuantity(title, newQuantity) {
+function updateQuantity(itemId, newQuantity) {
     const cart = getCart();
-    const item = cart.find(item => item.title === title);
+    const item = cart.find(item => item.id === itemId);
     
     if (item) {
         if (newQuantity <= 0) {
-            removeFromCart(title);
+            removeFromCart(itemId);
         } else {
             item.quantity = newQuantity;
             saveCart(cart);
@@ -241,13 +230,14 @@ function renderCart() {
     let totalItems = 0;
     cartContainer.innerHTML = '';
     
-    cart.forEach((item, index) => {
+    cart.forEach((item) => {
         const itemTotal = item.price * item.quantity;
         total += itemTotal;
         totalItems += item.quantity;
         
         const cartItem = document.createElement('div');
         cartItem.className = 'cart-item';
+        cartItem.dataset.id = item.id;
         
         // Формируем HTML в зависимости от того, нужен ли выбор пола
         let genderHtml = '';
@@ -255,15 +245,15 @@ function renderCart() {
             genderHtml = `
                 <div class="cart-item-gender-select">
                     <label class="gender-option-cart">
-                        <input type="radio" name="gender_${index}" value="Муж." ${item.gender === 'Муж.' ? 'checked' : ''}>
+                        <input type="radio" name="gender_${item.id}" value="Муж." ${item.gender === 'Муж.' ? 'checked' : ''}>
                         <span>👨 Муж.</span>
                     </label>
                     <label class="gender-option-cart">
-                        <input type="radio" name="gender_${index}" value="Жен." ${item.gender === 'Жен.' ? 'checked' : ''}>
+                        <input type="radio" name="gender_${item.id}" value="Жен." ${item.gender === 'Жен.' ? 'checked' : ''}>
                         <span>👩 Жен.</span>
                     </label>
                     <label class="gender-option-cart">
-                        <input type="radio" name="gender_${index}" value="Унисекс" ${item.gender === 'Унисекс' ? 'checked' : ''}>
+                        <input type="radio" name="gender_${item.id}" value="Унисекс" ${item.gender === 'Унисекс' ? 'checked' : ''}>
                         <span>👥 Унисекс</span>
                     </label>
                 </div>
@@ -278,11 +268,11 @@ function renderCart() {
                 <div class="cart-item-price">${item.price} ₽ × ${item.quantity} = ${itemTotal} ₽</div>
             </div>
             <div class="cart-item-quantity">
-                <button class="cart-item-decrease" data-index="${index}">-</button>
+                <button class="cart-item-decrease" data-id="${item.id}">-</button>
                 <span>${item.quantity}</span>
-                <button class="cart-item-increase" data-index="${index}">+</button>
+                <button class="cart-item-increase" data-id="${item.id}">+</button>
             </div>
-            <button class="cart-item-remove" data-index="${index}">🗑️</button>
+            <button class="cart-item-remove" data-id="${item.id}">🗑️</button>
         `;
         cartContainer.appendChild(cartItem);
     });
@@ -294,33 +284,32 @@ function renderCart() {
         cartSummary.textContent = `${totalItems} товар(ов) на сумму ${total} ₽`;
     }
     
-    // Добавляем обработчики событий для кнопок в корзине (используем индексы)
+    // Добавляем обработчики событий для кнопок в корзине
     document.querySelectorAll('.cart-item-remove').forEach(btn => {
         btn.addEventListener('click', (e) => {
-            const index = parseInt(btn.dataset.index);
-            const cart = getCart();
-            if (cart[index]) {
-                removeFromCart(cart[index].title);
-            }
+            const id = btn.dataset.id;
+            removeFromCart(id);
         });
     });
     
     document.querySelectorAll('.cart-item-decrease').forEach(btn => {
         btn.addEventListener('click', (e) => {
-            const index = parseInt(btn.dataset.index);
+            const id = btn.dataset.id;
             const cart = getCart();
-            if (cart[index]) {
-                updateQuantity(cart[index].title, cart[index].quantity - 1);
+            const item = cart.find(i => i.id === id);
+            if (item) {
+                updateQuantity(id, item.quantity - 1);
             }
         });
     });
     
     document.querySelectorAll('.cart-item-increase').forEach(btn => {
         btn.addEventListener('click', (e) => {
-            const index = parseInt(btn.dataset.index);
+            const id = btn.dataset.id;
             const cart = getCart();
-            if (cart[index]) {
-                updateQuantity(cart[index].title, cart[index].quantity + 1);
+            const item = cart.find(i => i.id === id);
+            if (item) {
+                updateQuantity(id, item.quantity + 1);
             }
         });
     });
@@ -328,15 +317,11 @@ function renderCart() {
     // Добавляем обработчики для выбора пола
     document.querySelectorAll('.gender-option-cart input').forEach(radio => {
         radio.addEventListener('change', (e) => {
-            // Находим индекс товара
-            const cartItem = e.target.closest('.cart-item');
-            const removeBtn = cartItem.querySelector('.cart-item-remove');
-            const index = parseInt(removeBtn.dataset.index);
-            const cart = getCart();
-            if (cart[index]) {
-                const newGender = e.target.value;
-                updateGender(cart[index].title, newGender);
-            }
+            // Находим ID товара из имени радиокнопки
+            const name = e.target.name;
+            const itemId = name.replace('gender_', '');
+            const newGender = e.target.value;
+            updateGender(itemId, newGender);
         });
     });
 }
