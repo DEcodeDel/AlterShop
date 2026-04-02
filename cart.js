@@ -1,12 +1,11 @@
 // cart.js - исправленная версия
 
 // КАТЕГОРИИ, ГДЕ НУЖЕН ВЫБОР ПОЛА
-const GENDER_CATEGORIES = [
-    'ОбликЖ',
-    'ОбликМ', 
+const GENDER_CATEGORIES = [ 
     'ОдеждаЖ',
     'ОдеждаМ',
-    'Крылья',
+    'Парики',
+    'Детское',
     'Аксессуары'
 ];
 
@@ -289,10 +288,6 @@ function renderCart() {
                     <label class="gender-option-cart">
                         <input type="radio" name="gender_${item.id}" value="Жен." ${item.gender === 'Жен.' ? 'checked' : ''}>
                         <span>👩 Жен.</span>
-                    </label>
-                    <label class="gender-option-cart">
-                        <input type="radio" name="gender_${item.id}" value="Унисекс" ${item.gender === 'Унисекс' ? 'checked' : ''}>
-                        <span>👥 Унисекс</span>
                     </label>
                 </div>
             `;
