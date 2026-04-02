@@ -1,4 +1,4 @@
-// cart.js - полная версия с синхронизацией между страницами
+// cart.js - версия с выбором пола в корзине
 
 // Функция для получения корзины из localStorage
 function getCart() {
@@ -12,7 +12,7 @@ function saveCart(cart) {
     updateCartCount();
 }
 
-// Функция для добавления товара в корзину
+// Функция для добавления товара в корзину (без выбора пола при добавлении)
 function addToCart(title, price, img) {
     const cart = getCart();
     const existingItem = cart.find(item => item.title === title);
@@ -24,6 +24,7 @@ function addToCart(title, price, img) {
             title: title,
             price: parseInt(price),
             img: img,
+            gender: 'Не выбран', // По умолчанию пол не выбран
             quantity: 1
         });
     }
@@ -42,6 +43,19 @@ function addToCart(title, price, img) {
     });
     
     showNotification(`✅ ${title} добавлен в корзину`);
+}
+
+// Функция для изменения пола товара в корзине
+function updateGender(title, newGender) {
+    const cart = getCart();
+    const item = cart.find(item => item.title === title);
+    
+    if (item) {
+        item.gender = newGender;
+        saveCart(cart);
+        renderCart(); // Обновляем отображение корзины
+        showNotification(`👤 Пол для "${title}" изменен на ${newGender}`);
+    }
 }
 
 // Функция для удаления товара из корзины
@@ -195,6 +209,20 @@ function renderCart() {
             <img class="cart-item-img" src="${item.img}" alt="${item.title}" onerror="this.src='img/gift.png'">
             <div class="cart-item-info">
                 <div class="cart-item-title">${escapeHtml(item.title)}</div>
+                <div class="cart-item-gender-select">
+                    <label class="gender-option-cart">
+                        <input type="radio" name="gender_${escapeHtml(item.title)}" value="Муж." ${item.gender === 'Муж.' ? 'checked' : ''}>
+                        <span>👨 Муж.</span>
+                    </label>
+                    <label class="gender-option-cart">
+                        <input type="radio" name="gender_${escapeHtml(item.title)}" value="Жен." ${item.gender === 'Жен.' ? 'checked' : ''}>
+                        <span>👩 Жен.</span>
+                    </label>
+                    <label class="gender-option-cart">
+                        <input type="radio" name="gender_${escapeHtml(item.title)}" value="Унисекс" ${item.gender === 'Унисекс' ? 'checked' : ''}>
+                        <span>👥 Унисекс</span>
+                    </label>
+                </div>
                 <div class="cart-item-price">${item.price} ₽ × ${item.quantity} = ${itemTotal} ₽</div>
             </div>
             <div class="cart-item-quantity">
@@ -214,6 +242,7 @@ function renderCart() {
         cartSummary.textContent = `${totalItems} товар(ов) на сумму ${total} ₽`;
     }
     
+    // Добавляем обработчики событий для кнопок в корзине
     document.querySelectorAll('.cart-item-remove').forEach(btn => {
         btn.addEventListener('click', (e) => {
             const title = btn.dataset.title;
@@ -242,6 +271,15 @@ function renderCart() {
             }
         });
     });
+    
+    // Добавляем обработчики для выбора пола
+    document.querySelectorAll('.gender-option-cart input').forEach(radio => {
+        radio.addEventListener('change', (e) => {
+            const title = e.target.name.replace('gender_', '');
+            const newGender = e.target.value;
+            updateGender(title, newGender);
+        });
+    });
 }
 
 function escapeHtml(text) {
@@ -263,7 +301,8 @@ function copyCartToClipboard() {
     cart.forEach(item => {
         const itemTotal = item.price * item.quantity;
         total += itemTotal;
-        message += `📦 ${item.title} × ${item.quantity} = ${itemTotal} ₽\n`;
+        const genderDisplay = item.gender !== 'Не выбран' ? ` (${item.gender})` : '';
+        message += `📦 ${item.title}${genderDisplay} × ${item.quantity} = ${itemTotal} ₽\n`;
     });
     
     message += `\n💰 *Итого: ${total} ₽*`;
@@ -280,6 +319,7 @@ function copyCartToClipboard() {
 document.addEventListener('DOMContentLoaded', function() {
     updateCartCount();
     
+    // Добавляем обработчики для всех кнопок "В корзину"
     const addToCartButtons = document.querySelectorAll('.add-to-cart-btn');
     addToCartButtons.forEach(button => {
         button.addEventListener('click', function(e) {
@@ -291,6 +331,7 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     });
     
+    // Если мы на странице корзины, рендерим её
     if (window.location.pathname.includes('cart.html')) {
         renderCart();
         
