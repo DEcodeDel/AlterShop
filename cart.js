@@ -10,6 +10,15 @@ const GENDER_CATEGORIES = [
     'Аксессуары'
 ];
 
+// Функция для декодирования URL-кодировки (например, %D0%9A -> К)
+function decodeCategory(str) {
+    try {
+        return decodeURIComponent(str);
+    } catch(e) {
+        return str;
+    }
+}
+
 // Функция для получения корзины из localStorage
 function getCart() {
     const cart = localStorage.getItem('cart');
@@ -25,7 +34,9 @@ function saveCart(cart) {
 // Функция для определения категории по URL страницы
 function getCurrentCategory() {
     const path = window.location.pathname;
-    const pageName = path.split('/').pop().replace('.html', '');
+    let pageName = path.split('/').pop().replace('.html', '');
+    // Декодируем название страницы (на случай если есть закодированные символы)
+    pageName = decodeCategory(pageName);
     return pageName;
 }
 
@@ -40,8 +51,9 @@ function addToCart(title, price, img) {
     const currentCategory = getCurrentCategory();
     const needsGender = needsGenderSelection(currentCategory);
     
-    // Создаем уникальный ID для товара
-    const itemId = `${title}_${currentCategory}`;
+    // Создаем уникальный ID для товара (используем чистые названия без кодировки)
+    const cleanCategory = decodeCategory(currentCategory);
+    const itemId = `${title}_${cleanCategory}`;
     
     // Ищем существующий товар
     let existingItem = cart.find(item => item.id === itemId);
@@ -54,7 +66,7 @@ function addToCart(title, price, img) {
             title: title,
             price: parseInt(price),
             img: img,
-            category: currentCategory,
+            category: cleanCategory,
             needsGender: needsGender,
             gender: needsGender ? 'Не выбран' : null,
             quantity: 1
@@ -203,6 +215,32 @@ function showNotification(message) {
     }, 2000);
 }
 
+// Функция для исправления старых товаров в корзине (добавляет поле needsGender)
+function fixOldCartItems() {
+    let cart = getCart();
+    let changed = false;
+    
+    cart = cart.map(item => {
+        // Если у товара нет поля needsGender, определяем его по категории
+        if (item.needsGender === undefined) {
+            // Декодируем категорию, если она закодирована
+            const cleanCategory = item.category ? decodeCategory(item.category) : '';
+            item.needsGender = GENDER_CATEGORIES.includes(cleanCategory);
+            item.category = cleanCategory;
+            if (item.needsGender && !item.gender) {
+                item.gender = 'Не выбран';
+            }
+            changed = true;
+        }
+        return item;
+    });
+    
+    if (changed) {
+        saveCart(cart);
+        console.log('✅ Старые товары в корзине исправлены');
+    }
+}
+
 // Функция для отображения корзины на странице cart.html
 function renderCart() {
     const cart = getCart();
@@ -317,7 +355,6 @@ function renderCart() {
     // Добавляем обработчики для выбора пола
     document.querySelectorAll('.gender-option-cart input').forEach(radio => {
         radio.addEventListener('change', (e) => {
-            // Находим ID товара из имени радиокнопки
             const name = e.target.name;
             const itemId = name.replace('gender_', '');
             const newGender = e.target.value;
@@ -364,6 +401,9 @@ function copyCartToClipboard() {
 
 // Инициализация при загрузке страницы
 document.addEventListener('DOMContentLoaded', function() {
+    // Сначала исправляем старые товары в корзине
+    fixOldCartItems();
+    
     updateCartCount();
     
     // Добавляем обработчики для всех кнопок "В корзину"
