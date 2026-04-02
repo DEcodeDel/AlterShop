@@ -1,39 +1,14 @@
-// cart.js - версия с выбором пола только для определенных категорий
+// cart.js - исправленная версия
 
-// КАТЕГОРИИ, ГДЕ НЕ НУЖЕН ВЫБОР ПОЛА
-const NO_GENDER_CATEGORIES = [
-    'Интерактивы',
-    'Фоны',
-    'Титулы',
-    'Разное',
-    'Фоны/Рамки',
-    'Транспорт/Развлечения'
+// КАТЕГОРИИ, ГДЕ НУЖЕН ВЫБОР ПОЛА
+const GENDER_CATEGORIES = [
+    'ОбликЖ',
+    'ОбликМ', 
+    'ОдеждаЖ',
+    'ОдеждаМ',
+    'Крылья',
+    'Аксессуары'
 ];
-
-// Функция для проверки, нужен ли выбор пола для товара
-function needsGenderSelection(title) {
-    // Проверяем по названию страницы (можно передавать из URL или из атрибута)
-    // Второй вариант: добавить data-атрибут в карточку
-    
-    // Проверяем по URL страницы, с которой добавлен товар
-    const referrer = document.referrer;
-    
-    for (const category of NO_GENDER_CATEGORIES) {
-        if (referrer.includes(category) || document.referrer.includes(encodeURIComponent(category))) {
-            return false;
-        }
-    }
-    
-    // Можно также проверять по названию товара (если есть ключевые слова)
-    const noGenderKeywords = ['фон', 'титул', 'интерактив', 'транспорт', 'рамка'];
-    for (const keyword of noGenderKeywords) {
-        if (title.toLowerCase().includes(keyword)) {
-            return false;
-        }
-    }
-    
-    return true;
-}
 
 // Функция для получения корзины из localStorage
 function getCart() {
@@ -47,13 +22,41 @@ function saveCart(cart) {
     updateCartCount();
 }
 
-// Функция для добавления товара в корзину (с определением категории)
-function addToCart(title, price, img, category) {
+// Функция для определения категории по URL страницы
+function getCurrentCategory() {
+    const path = window.location.pathname;
+    const pageName = path.split('/').pop().replace('.html', '');
+    return pageName;
+}
+
+// Функция для проверки, нужен ли выбор пола для данной страницы/категории
+function needsGenderSelection(category) {
+    return GENDER_CATEGORIES.includes(category);
+}
+
+// Функция для добавления товара в корзину
+function addToCart(title, price, img) {
     const cart = getCart();
-    const existingItem = cart.find(item => item.title === title);
+    const currentCategory = getCurrentCategory();
+    const needsGender = needsGenderSelection(currentCategory);
     
-    // Определяем, нужен ли выбор пола для этого товара
-    const needsGender = category ? !NO_GENDER_CATEGORIES.includes(category) : needsGenderSelection(title);
+    // Уникальный ключ для товара (с учетом категории и пола, если нужен)
+    let existingItem = null;
+    
+    if (needsGender) {
+        // Для товаров с выбором пола - ищем точное совпадение включая пол
+        existingItem = cart.find(item => 
+            item.title === title && 
+            item.category === currentCategory &&
+            item.gender === (item.gender || 'Не выбран')
+        );
+    } else {
+        // Для товаров без выбора пола - просто по названию и категории
+        existingItem = cart.find(item => 
+            item.title === title && 
+            item.category === currentCategory
+        );
+    }
     
     if (existingItem) {
         existingItem.quantity += 1;
@@ -62,7 +65,7 @@ function addToCart(title, price, img, category) {
             title: title,
             price: parseInt(price),
             img: img,
-            category: category || 'Другое',
+            category: currentCategory,
             needsGender: needsGender,
             gender: needsGender ? 'Не выбран' : null,
             quantity: 1
@@ -88,9 +91,9 @@ function addToCart(title, price, img, category) {
 // Функция для изменения пола товара в корзине
 function updateGender(title, newGender) {
     const cart = getCart();
-    const item = cart.find(item => item.title === title);
+    const item = cart.find(item => item.title === title && item.needsGender === true);
     
-    if (item && item.needsGender) {
+    if (item) {
         item.gender = newGender;
         saveCart(cart);
         renderCart();
@@ -211,29 +214,6 @@ function showNotification(message) {
     }, 2000);
 }
 
-// Функция для определения категории по URL страницы
-function getCurrentCategory() {
-    const path = window.location.pathname;
-    const pageName = path.split('/').pop().replace('.html', '');
-    
-    const categoryMap = {
-        'ОбликЖ': 'Облики',
-        'ОбликМ': 'Облики',
-        'ОдеждаЖ': 'Одежда',
-        'ОдеждаМ': 'Одежда',
-        'Крылья': 'Крылья',
-        'Аксессуары': 'Аксессуары',
-        'ШоуИнт': 'Интерактивы',
-        'ШоуФон': 'Фоны',
-        'Титулы': 'Титулы',
-        'Разное': 'Разное',
-        'ФоныРамки': 'Фоны/Рамки',
-        'ТранспортРазвлечения': 'Транспорт/Развлечения'
-    };
-    
-    return categoryMap[pageName] || 'Другое';
-}
-
 // Функция для отображения корзины на странице cart.html
 function renderCart() {
     const cart = getCart();
@@ -261,7 +241,7 @@ function renderCart() {
     let totalItems = 0;
     cartContainer.innerHTML = '';
     
-    cart.forEach((item) => {
+    cart.forEach((item, index) => {
         const itemTotal = item.price * item.quantity;
         total += itemTotal;
         totalItems += item.quantity;
@@ -271,16 +251,20 @@ function renderCart() {
         
         // Формируем HTML в зависимости от того, нужен ли выбор пола
         let genderHtml = '';
-        if (item.needsGender) {
+        if (item.needsGender === true) {
             genderHtml = `
                 <div class="cart-item-gender-select">
                     <label class="gender-option-cart">
-                        <input type="radio" name="gender_${escapeHtml(item.title)}" value="Муж." ${item.gender === 'Муж.' ? 'checked' : ''}>
+                        <input type="radio" name="gender_${index}" value="Муж." ${item.gender === 'Муж.' ? 'checked' : ''}>
                         <span>👨 Муж.</span>
                     </label>
                     <label class="gender-option-cart">
-                        <input type="radio" name="gender_${escapeHtml(item.title)}" value="Жен." ${item.gender === 'Жен.' ? 'checked' : ''}>
+                        <input type="radio" name="gender_${index}" value="Жен." ${item.gender === 'Жен.' ? 'checked' : ''}>
                         <span>👩 Жен.</span>
+                    </label>
+                    <label class="gender-option-cart">
+                        <input type="radio" name="gender_${index}" value="Унисекс" ${item.gender === 'Унисекс' ? 'checked' : ''}>
+                        <span>👥 Унисекс</span>
                     </label>
                 </div>
             `;
@@ -294,11 +278,11 @@ function renderCart() {
                 <div class="cart-item-price">${item.price} ₽ × ${item.quantity} = ${itemTotal} ₽</div>
             </div>
             <div class="cart-item-quantity">
-                <button class="cart-item-decrease" data-title="${escapeHtml(item.title)}">-</button>
+                <button class="cart-item-decrease" data-index="${index}">-</button>
                 <span>${item.quantity}</span>
-                <button class="cart-item-increase" data-title="${escapeHtml(item.title)}">+</button>
+                <button class="cart-item-increase" data-index="${index}">+</button>
             </div>
-            <button class="cart-item-remove" data-title="${escapeHtml(item.title)}">🗑️</button>
+            <button class="cart-item-remove" data-index="${index}">🗑️</button>
         `;
         cartContainer.appendChild(cartItem);
     });
@@ -310,46 +294,48 @@ function renderCart() {
         cartSummary.textContent = `${totalItems} товар(ов) на сумму ${total} ₽`;
     }
     
-    // Добавляем обработчики событий для кнопок в корзине
+    // Добавляем обработчики событий для кнопок в корзине (используем индексы)
     document.querySelectorAll('.cart-item-remove').forEach(btn => {
         btn.addEventListener('click', (e) => {
-            const title = btn.dataset.title;
-            removeFromCart(title);
+            const index = parseInt(btn.dataset.index);
+            const cart = getCart();
+            if (cart[index]) {
+                removeFromCart(cart[index].title);
+            }
         });
     });
     
     document.querySelectorAll('.cart-item-decrease').forEach(btn => {
         btn.addEventListener('click', (e) => {
-            const title = btn.dataset.title;
+            const index = parseInt(btn.dataset.index);
             const cart = getCart();
-            const item = cart.find(i => i.title === title);
-            if (item) {
-                updateQuantity(title, item.quantity - 1);
+            if (cart[index]) {
+                updateQuantity(cart[index].title, cart[index].quantity - 1);
             }
         });
     });
     
     document.querySelectorAll('.cart-item-increase').forEach(btn => {
         btn.addEventListener('click', (e) => {
-            const title = btn.dataset.title;
+            const index = parseInt(btn.dataset.index);
             const cart = getCart();
-            const item = cart.find(i => i.title === title);
-            if (item) {
-                updateQuantity(title, item.quantity + 1);
+            if (cart[index]) {
+                updateQuantity(cart[index].title, cart[index].quantity + 1);
             }
         });
     });
     
-    // Добавляем обработчики для выбора пола (только для товаров, где это нужно)
+    // Добавляем обработчики для выбора пола
     document.querySelectorAll('.gender-option-cart input').forEach(radio => {
         radio.addEventListener('change', (e) => {
-            // Находим заголовок товара (родительский элемент)
+            // Находим индекс товара
             const cartItem = e.target.closest('.cart-item');
-            const titleElement = cartItem.querySelector('.cart-item-title');
-            if (titleElement) {
-                const title = titleElement.textContent;
+            const removeBtn = cartItem.querySelector('.cart-item-remove');
+            const index = parseInt(removeBtn.dataset.index);
+            const cart = getCart();
+            if (cart[index]) {
                 const newGender = e.target.value;
-                updateGender(title, newGender);
+                updateGender(cart[index].title, newGender);
             }
         });
     });
@@ -395,9 +381,6 @@ function copyCartToClipboard() {
 document.addEventListener('DOMContentLoaded', function() {
     updateCartCount();
     
-    // Определяем текущую категорию для добавления товаров
-    const currentCategory = getCurrentCategory();
-    
     // Добавляем обработчики для всех кнопок "В корзину"
     const addToCartButtons = document.querySelectorAll('.add-to-cart-btn');
     addToCartButtons.forEach(button => {
@@ -406,7 +389,7 @@ document.addEventListener('DOMContentLoaded', function() {
             const title = this.dataset.title;
             const price = this.dataset.price;
             const img = this.dataset.img;
-            addToCart(title, price, img, currentCategory);
+            addToCart(title, price, img);
         });
     });
     
