@@ -298,7 +298,7 @@ function renderCart() {
             <div class="cart-item-info">
                 <div class="cart-item-title">${escapeHtml(item.title)}</div>
                 ${genderHtml}
-                <div class="cart-item-price">${item.price} ₽ × ${item.quantity} = ${itemTotal} ₽</div>
+                <div class="cart-item-price">${item.price} мнт × ${item.quantity} = ${itemTotal} мнт</div>
             </div>
             <div class="cart-item-quantity">
                 <button class="cart-item-decrease" data-id="${item.id}">-</button>
