@@ -283,11 +283,11 @@ function renderCart() {
                 <div class="cart-item-gender-select">
                     <label class="gender-option-cart">
                         <input type="radio" name="gender_${item.id}" value="Муж." ${item.gender === 'Муж.' ? 'checked' : ''}>
-                        <span>👨 Муж.</span>
+                        <span> Муж.</span>
                     </label>
                     <label class="gender-option-cart">
                         <input type="radio" name="gender_${item.id}" value="Жен." ${item.gender === 'Жен.' ? 'checked' : ''}>
-                        <span>👩 Жен.</span>
+                        <span> Жен.</span>
                     </label>
                 </div>
             `;
@@ -311,10 +311,10 @@ function renderCart() {
     });
     
     if (cartTotal) {
-        cartTotal.textContent = `${total} ₽`;
+        cartTotal.textContent = `${total} мнт`;
     }
     if (cartSummary) {
-        cartSummary.textContent = `${totalItems} товар(ов) на сумму ${total} ₽`;
+        cartSummary.textContent = `${totalItems} товар(ов) на сумму ${total} мнт`;
     }
     
     // Добавляем обработчики событий для кнопок в корзине
@@ -381,11 +381,11 @@ function copyCartToClipboard() {
         if (item.needsGender && item.gender && item.gender !== 'Не выбран') {
             genderDisplay = ` (${item.gender})`;
         }
-        message += `📦 ${item.title}${genderDisplay} × ${item.quantity} = ${itemTotal} ₽\n`;
+        message += ` ${item.title}${genderDisplay} × ${item.quantity} = ${itemTotal} ₽\n`;
     });
     
-    message += `\n💰 *Итого: ${total} ₽*`;
-    message += `\n\n🚀 Для оформления заказа: @sfchkk03`;
+    message += `\n *Итого: ${total} ₽*`;
+    message += `\n\n Для оформления заказа: @akumatsu`;
     
     navigator.clipboard.writeText(message).then(() => {
         showNotification('✅ Состав корзины скопирован!');
