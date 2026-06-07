@@ -381,10 +381,10 @@ function copyCartToClipboard() {
         if (item.needsGender && item.gender && item.gender !== 'Не выбран') {
             genderDisplay = ` (${item.gender})`;
         }
-        message += ` ${item.title}${genderDisplay} × ${item.quantity} = ${itemTotal} ₽\n`;
+        message += ` ${item.title}${genderDisplay} × ${item.quantity} = ${itemTotal} мнт\n`;
     });
     
-    message += `\n *Итого: ${total} ₽*`;
+    message += `\n *Итого: ${total} мнт*`;
     message += `\n\n Для оформления заказа: @akumatsu`;
     
     navigator.clipboard.writeText(message).then(() => {
